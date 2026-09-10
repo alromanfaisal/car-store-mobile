@@ -1,17 +1,24 @@
 // src/components/product-card.tsx
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Image } from 'expo-image';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { Product } from '@/lib/api';
+import { useCart } from '@/context/CartContext';
 
 const BASE_IMAGE_URL = 'https://ecommerce-app-alroman.vercel.app';
 
 export function ProductCard({ item }: { item: Product }) {
+  const { addItem } = useCart();
   const price = item.discount_price ?? item.price;
   const hasDiscount = typeof item.discount_price === 'number';
+
+  const handleAddToCart = async () => {
+    await addItem(item);
+    Alert.alert('Added', `${item.name} added to cart`);
+  };
 
   return (
     <ThemedView type="backgroundElement" style={styles.card}>
@@ -36,6 +43,9 @@ export function ProductCard({ item }: { item: Product }) {
             </ThemedView>
           )}
         </ThemedView>
+        <TouchableOpacity style={styles.addButton} onPress={handleAddToCart}>
+          <ThemedText type="small" style={styles.addButtonText}>Add to Cart</ThemedText>
+        </TouchableOpacity>
       </ThemedView>
     </ThemedView>
   );
@@ -57,7 +67,7 @@ const styles = StyleSheet.create({
   cardInfo: {
     flex: 1,
     justifyContent: 'center',
-    gap: 2,
+    gap: 4,
   },
   priceRow: {
     flexDirection: 'row',
@@ -75,6 +85,16 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   badgeText: {
+    color: '#fff',
+  },
+  addButton: {
+    backgroundColor: '#2563eb',
+    paddingVertical: 6,
+    borderRadius: 6,
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  addButtonText: {
     color: '#fff',
   },
 });
