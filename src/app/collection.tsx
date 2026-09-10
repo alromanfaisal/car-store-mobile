@@ -1,4 +1,4 @@
-// src/app/index.tsx
+// src/app/collection.tsx
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,7 +9,7 @@ import { ProductCard } from '@/components/product-card';
 import { Spacing, BottomTabInset, MaxContentWidth } from '@/constants/theme';
 import { getAllProducts, Product } from '@/lib/api';
 
-export default function HomeScreen() {
+export default function CollectionScreen() {
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -25,7 +25,7 @@ export default function HomeScreen() {
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ThemedText type="title" style={styles.title}>
-          Car Store
+          All Collections
         </ThemedText>
 
         {loading && <ThemedText type="small">Loading cars...</ThemedText>}
