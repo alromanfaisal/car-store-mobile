@@ -2,6 +2,7 @@
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
+import { router } from 'expo-router';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -80,6 +81,10 @@ export default function CartScreen() {
           <ThemedText type="defaultSemiBold">Total</ThemedText>
           <ThemedText type="defaultSemiBold">${totalPrice}</ThemedText>
         </ThemedView>
+
+        <TouchableOpacity style={styles.checkoutButton} onPress={() => router.push('/checkout')}>
+          <ThemedText style={styles.checkoutText}>Proceed to Checkout</ThemedText>
+        </TouchableOpacity>
       </SafeAreaView>
     </ThemedView>
   );
@@ -126,4 +131,12 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#eee',
   },
+  checkoutButton: {
+    backgroundColor: '#2563eb',
+    borderRadius: Spacing.two,
+    padding: Spacing.three,
+    alignItems: 'center',
+    marginTop: Spacing.two,
+  },
+  checkoutText: { color: '#fff', fontWeight: '600' },
 });
