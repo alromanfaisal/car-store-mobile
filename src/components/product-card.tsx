@@ -1,6 +1,7 @@
 // src/components/product-card.tsx
 import { StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Image } from 'expo-image';
+import { router } from 'expo-router';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -20,43 +21,53 @@ export function ProductCard({ item }: { item: Product }) {
     Alert.alert('Added', `${item.name} added to cart`);
   };
 
+  const goToDetail = () => {
+    router.push(`/product/${item.id}`);
+  };
+
   return (
     <ThemedView type="backgroundElement" style={styles.card}>
-      <Image
-        source={{ uri: `${BASE_IMAGE_URL}${item.image_url}` }}
-        style={styles.image}
-        contentFit="cover"
-      />
-      <ThemedView style={styles.cardInfo}>
-        <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
-        <ThemedText type="small">{item.description}</ThemedText>
-        <ThemedView style={styles.priceRow}>
-          <ThemedText type="defaultSemiBold">${price}</ThemedText>
-          {hasDiscount && (
-            <ThemedText type="small" style={styles.strikethrough}>
-              ${item.price}
-            </ThemedText>
-          )}
-          {item.is_new && (
-            <ThemedView style={styles.badge}>
-              <ThemedText type="small" style={styles.badgeText}>NEW</ThemedText>
-            </ThemedView>
-          )}
+      <TouchableOpacity style={styles.touchableArea} onPress={goToDetail}>
+        <Image
+          source={{ uri: `${BASE_IMAGE_URL}${item.image_url}` }}
+          style={styles.image}
+          contentFit="cover"
+        />
+        <ThemedView style={styles.cardInfo}>
+          <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
+          <ThemedText type="small">{item.description}</ThemedText>
+          <ThemedView style={styles.priceRow}>
+            <ThemedText type="defaultSemiBold">${price}</ThemedText>
+            {hasDiscount && (
+              <ThemedText type="small" style={styles.strikethrough}>
+                ${item.price}
+              </ThemedText>
+            )}
+            {item.is_new && (
+              <ThemedView style={styles.badge}>
+                <ThemedText type="small" style={styles.badgeText}>NEW</ThemedText>
+              </ThemedView>
+            )}
+          </ThemedView>
         </ThemedView>
-        <TouchableOpacity style={styles.addButton} onPress={handleAddToCart}>
-          <ThemedText type="small" style={styles.addButtonText}>Add to Cart</ThemedText>
-        </TouchableOpacity>
-      </ThemedView>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.addButton} onPress={handleAddToCart}>
+        <ThemedText type="small" style={styles.addButtonText}>Add to Cart</ThemedText>
+      </TouchableOpacity>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row',
     borderRadius: Spacing.three,
     padding: Spacing.two,
     marginBottom: Spacing.two,
+    gap: Spacing.two,
+  },
+  touchableArea: {
+    flexDirection: 'row',
     gap: Spacing.three,
   },
   image: {
@@ -92,7 +103,6 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 6,
     alignItems: 'center',
-    marginTop: 4,
   },
   addButtonText: {
     color: '#fff',
